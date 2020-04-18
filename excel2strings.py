@@ -31,29 +31,28 @@ for sheet_name in sheet_names:
     # all keys string(s)
     keys = sheet.col_values(columnIndexForAllKeys, rowIndexForStartKeyValue)
     # all english value string(s)
-    values_EN = sheet.col_values(columnIndexForValues_en, rowIndexForStartKeyValue)
-    values_ZH_CN = sheet.col_values(columnIndexForValues_en, rowIndexForStartKeyValue)
-    values_TS_CN = sheet.col_values(columnIndexForValues_sc, rowIndexForStartKeyValue)
+    values_en = sheet.col_values(columnIndexForValues_en, rowIndexForStartKeyValue)
+    values_sc = sheet.col_values(columnIndexForValues_en, rowIndexForStartKeyValue)
+    values_tc = sheet.col_values(columnIndexForValues_sc, rowIndexForStartKeyValue)
 
     # 写入文件 EN
     filename_en = 'output_' + sheet_name + '_en.strings'
     with open(filename_en, 'w') as file_object:
         for index in range(len(keys)):
-            text_line = "\"%s\" = \"%s\"" % (keys[index], values_EN[index])
+            text_line = "\"%s\" = \"%s\"" % (keys[index], values_en[index])
             file_object.write(text_line + "\n")
 
     # 写入文件 SC
     filename_sc = 'output_' + sheet_name + '_sc.strings'
     with open(filename_sc, 'w') as file_object:
         for index in range(len(keys)):
-            text_line = "\"%s\" = \"%s\"" % (keys[index], values_ZH_CN[index])
+            text_line = "\"%s\" = \"%s\"" % (keys[index], values_sc[index])
             file_object.write(text_line + "\n")
 
     # 写入文件 TC
     filename_tc = 'output_' + sheet_name + '_tc.strings'
     with open(filename_tc, 'w') as file_object:
         for index in range(len(keys)):
-            text_line = "\"%s\" = \"%s\"" % (keys[index], values_TS_CN[index])
+            text_line = "\"%s\" = \"%s\"" % (keys[index], values_tc[index])
             file_object.write(text_line + "\n")
-
 
