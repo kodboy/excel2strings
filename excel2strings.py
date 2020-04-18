@@ -32,8 +32,8 @@ for sheet_name in sheet_names:
     keys = sheet.col_values(columnIndexForAllKeys, rowIndexForStartKeyValue)
     # all english value string(s)
     values_en = sheet.col_values(columnIndexForValues_en, rowIndexForStartKeyValue)
-    values_sc = sheet.col_values(columnIndexForValues_en, rowIndexForStartKeyValue)
-    values_tc = sheet.col_values(columnIndexForValues_sc, rowIndexForStartKeyValue)
+    values_sc = sheet.col_values(columnIndexForValues_sc, rowIndexForStartKeyValue)
+    values_tc = sheet.col_values(columnIndexForValues_tc, rowIndexForStartKeyValue)
 
     # 写入文件 EN
     filename_en = 'output_' + sheet_name + '_en.strings'
@@ -55,4 +55,5 @@ for sheet_name in sheet_names:
         for index in range(len(keys)):
             text_line = "\"%s\" = \"%s\"" % (keys[index], values_tc[index])
             file_object.write(text_line + "\n")
+
 
