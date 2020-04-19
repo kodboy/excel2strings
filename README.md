@@ -1,12 +1,15 @@
 # excel2strings
-a excel to iOS strings tool
 
-## dependicies
-- xlrd
-> run `pip install xlrd`
+A tiny tool to convert excel file to iOS .strings files.
+
+## Dependencies
+
+- XLRD  <https://github.com/python-excel/xlrd>
+  > excute `pip install xlrd`
 
 ## Usage
+
 1. Put excel2strings.py & excel file into the same file folder.
-2. Specify your initialization parameters
-3. run `Python3 excel2strings.py`, then it will output some `.strings` files.
+2. Edit `excel2strings.py`, and specify your initialization parameters.
+3. Run `Python3 excel2strings.py`, then it will output some `.strings` files.
 
