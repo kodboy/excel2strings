@@ -16,4 +16,14 @@ A tiny tool to convert excel file to iOS .strings files.
 
 ## Tips
 
-If you want to combine all `xxx_en.strings` file, just excute shell `cat 1_en.strings 2_en.string > en.strings`.
+If you want to combine all `xxx_en.strings` file, just excute shell
+
+1. May cause files to be out of order
+
+```shell
+cat *_en.strings > en.strings
+```
+or 2. Given order
+ ```
+ cat xxx_en.strings yyy_en.string > en.strings
+ ```
