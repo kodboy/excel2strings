@@ -5,7 +5,7 @@
 
 - XLRD  <https://github.com/python-excel/xlrd>
   
-    > Run `pip install xlrd`
+    > 运行 `pip install xlrd`
 
 ## 使用方法
 
@@ -21,6 +21,6 @@
 cat *_en.strings > en.strings
 ```
 或者使用 2. 给定顺序
-```
+```shell
 cat xxx_en.strings yyy_en.string > en.strings
 ```
