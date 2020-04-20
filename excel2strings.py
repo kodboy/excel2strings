@@ -1,27 +1,3 @@
-import xlrd
-
-########################################### 初始化定义 - 开始
-# 指定Excel文件名, (别忘加后缀)
-excel_file_name = "income.xlsx"
-# 指定sheets名字s
-sheet_names = ["2018", "2017", "2016"]
-
-#### 指定关键行号
-# 标题行的行号(没用使用)
-rowIndexForTitle = 0
-# 首行 Key-Value 的行号 !important
-rowIndexForStartKeyValue = 1
-
-#### 指定关键列号
-# Key的列号
-columnIndexForAllKeys = 0
-# 英文列的列号
-columnIndexForValues_en = 1
-# 简体中文列的列号
-columnIndexForValues_sc = 2
-# 繁体中文列的列号
-columnIndexForValues_tc = 3
-############################################# 初始化定义 - 结束
 
 book = xlrd.open_workbook(excel_file_name)
 # 遍历sheets
@@ -41,9 +17,10 @@ for sheet_name in sheet_names:
         for index in range(len(keys)):
             key_text = keys[index]
             value_text = values_en[index]
+            # 如果KEY内容为空(""),将被跳过
             if key_text != "":
                 text_line = "\"%s\" = \"%s\"" % (key_text, value_text)
-                file_object.write(text_line + "\n")
+                file_object.write(text_line + ";\n")
                 
     # 写入文件 SC
     filename_sc = 'output_' + sheet_name + '_sc.strings'
@@ -51,9 +28,10 @@ for sheet_name in sheet_names:
         for index in range(len(keys)):
             key_text = keys[index]
             value_text = values_sc[index]
+            # 如果KEY内容为空(""),将被跳过
             if key_text != "":
                 text_line = "\"%s\" = \"%s\"" % (key_text, value_text)
-                file_object.write(text_line + "\n")
+                file_object.write(text_line + ";\n")
 
     # 写入文件 TC
     filename_tc = 'output_' + sheet_name + '_tc.strings'
@@ -61,7 +39,7 @@ for sheet_name in sheet_names:
         for index in range(len(keys)):
             key_text = keys[index]
             value_text = values_tc[index]
+            # 如果KEY内容为空(""),将被跳过
             if key_text != "":
                 text_line = "\"%s\" = \"%s\"" % (key_text, value_text)
-                file_object.write(text_line + "\n")
-
+                file_object.write(text_line + ";\n")
