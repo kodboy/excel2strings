@@ -5,8 +5,10 @@ A tiny tool to convert excel file to iOS .strings files.
 ## Dependencies
 
 - XLRD  <https://github.com/python-excel/xlrd>
-  
-    > Run `pip install xlrd`
+Run
+```shell
+pip install xlrd
+```
 
 ## Usage
 
@@ -24,6 +26,6 @@ If you want to combine all `xxx_en.strings` file, just excute shell
 cat *_en.strings > en.strings
 ```
 or 2. Given order
- ```
+ ```shell
  cat xxx_en.strings yyy_en.string > en.strings
  ```
