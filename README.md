@@ -5,10 +5,7 @@ A tiny tool to convert excel file to iOS .strings files.
 ## Dependencies
 
 - XLRD  <https://github.com/python-excel/xlrd>
-Run
-```shell
-pip install xlrd
-```
+> Run `pip install xlrd`
 
 ## Usage
 
