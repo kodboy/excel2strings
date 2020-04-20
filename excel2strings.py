@@ -1,4 +1,5 @@
 import xlrd
+import os
 
 ########################################### 初始化定义 - 开始
 # 指定Excel文件名, (别忘加后缀)
@@ -25,6 +26,7 @@ columnIndexForValues_tc = 3
 ############################################# 初始化定义 - 结束
 
 book = xlrd.open_workbook(excel_file_name)
+
 # 遍历sheets
 for sheet_index in range(len(sheet_names)):
     sheet_name = sheet_names[sheet_index]
@@ -38,39 +40,48 @@ for sheet_index in range(len(sheet_names)):
     values_en = sheet.col_values(columnIndexForValues_en, rowIndexForStartKeyValue)
     values_sc = sheet.col_values(columnIndexForValues_sc, rowIndexForStartKeyValue)
     values_tc = sheet.col_values(columnIndexForValues_tc, rowIndexForStartKeyValue)
-
+    
     # 写入文件 EN
     filename_en = sheet_name + '_en.strings'
-    with open(filename_en, 'w') as file_object:
-        file_object.write("/* %s */\n" % (sheet_name))
-        for index in range(len(keys)):
-            key_text = keys[index]
-            value_text = values_en[index].replace("\"", "\\\"").replace("\n", "\\n").replace("\\n\"", "\"")
-            # 如果KEY内容为空(""),将被跳过
-            if key_text != "":
-                text_line = "\"%s%s\" = \"%s\"" % (key_prefix,key_text, value_text)
-                file_object.write(text_line + ";\n")
+    with open("en.strings", 'a+') as file_en:
+        with open(filename_en, 'w') as file_object:
+            # file_object.write("/* %s */\n" % (sheet_name))
+            print("filename_en: %s" % filename_en)
+            for index in range(len(keys)):
+                key_text = keys[index]
+                value_text = values_en[index].replace("\"", "\\\"").replace("\n", "\\n").replace("\\n\"", "\"")
+                # 如果KEY内容为空(""),将被跳过
+                if key_text != "":
+                    text_line = "\"%s%s\" = \"%s\"" % (key_prefix,key_text, value_text)
+                    file_object.write(text_line + ";\n")
+                    file_en.write(text_line + ";\n")
                 
     # 写入文件 SC
     filename_sc = sheet_name + '_sc.strings'
-    with open(filename_sc, 'w') as file_object:
-        file_object.write("/* %s */\n" % (sheet_name))
-        for index in range(len(keys)):
-            key_text = keys[index]
-            value_text = values_sc[index].replace("\"", "\\\"").replace("\n", "\\n").replace("\\n\"", "\"")
-            # 如果KEY内容为空(""),将被跳过
-            if key_text != "":
-                text_line = "\"%s%s\" = \"%s\"" % (key_prefix,key_text, value_text)
-                file_object.write(text_line + ";\n")
+    with open("sc.strings", 'a+') as file_sc:
+        with open(filename_sc, 'w') as file_object:
+            # file_object.write("/* %s */\n" % (sheet_name))
+            print("filename_sc: %s" % filename_sc)
+            for index in range(len(keys)):
+                key_text = keys[index]
+                value_text = values_sc[index].replace("\"", "\\\"").replace("\n", "\\n").replace("\\n\"", "\"")
+                # 如果KEY内容为空(""),将被跳过
+                if key_text != "":
+                    text_line = "\"%s%s\" = \"%s\"" % (key_prefix,key_text, value_text)
+                    file_object.write(text_line + ";\n")
+                    file_sc.write(text_line + ";\n")
 
     # 写入文件 TC
     filename_tc = sheet_name + '_tc.strings'
-    with open(filename_tc, 'w') as file_object:
-        file_object.write("/* %s */\n" % (sheet_name))
-        for index in range(len(keys)):
-            key_text = keys[index]
-            value_text = values_tc[index].replace("\"", "\\\"").replace("\n", "\\n").replace("\\n\"", "\"")
-            # 如果KEY内容为空(""),将被跳过
-            if key_text != "":
-                text_line = "\"%s%s\" = \"%s\"" % (key_prefix,key_text, value_text)
-                file_object.write(text_line + ";\n")
+    with open("tc.strings", 'a+') as file_tc:
+        with open(filename_tc, 'w') as file_object:
+            # file_object.write("/* %s */\n" % (sheet_name))
+            print("filename_tc: %s" % filename_tc)
+            for index in range(len(keys)):
+                key_text = keys[index]
+                value_text = values_tc[index].replace("\"", "\\\"").replace("\n", "\\n").replace("\\n\"", "\"")
+                # 如果KEY内容为空(""),将被跳过
+                if key_text != "":
+                    text_line = "\"%s%s\" = \"%s\"" % (key_prefix,key_text, value_text)
+                    file_object.write(text_line + ";\n")
+                    file_tc.write(text_line + ";\n")
