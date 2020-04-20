@@ -1,5 +1,4 @@
 import xlrd
-import os
 
 ########################################### 初始化定义 - 开始
 # 指定Excel文件名, (别忘加后缀)
@@ -85,3 +84,5 @@ for sheet_index in range(len(sheet_names)):
                     text_line = "\"%s%s\" = \"%s\"" % (key_prefix,key_text, value_text)
                     file_object.write(text_line + ";\n")
                     file_tc.write(text_line + ";\n")
+
+print("SUCCESS!")
