@@ -1,5 +1,7 @@
 import xlrd
 
+# 只提示重复,不去重
+
 ########################################### 初始化定义 - 开始
 # 指定Excel文件名, (别忘加后缀)
 excel_file_name = "nls.xlsx"
@@ -26,6 +28,8 @@ columnIndexForValues_tc = 3
 
 book = xlrd.open_workbook(excel_file_name)
 
+map_record = {} # Check en only
+
 # 遍历sheets
 for sheet_index in range(len(sheet_names)):
     sheet_name = sheet_names[sheet_index]
@@ -48,13 +52,22 @@ for sheet_index in range(len(sheet_names)):
             print("filename_en: %s" % filename_en)
             for index in range(len(keys)):
                 key_text = keys[index]
-                value_text = values_en[index].replace("\"", "\\\"").replace("\n", "\\n").replace("\\n\"", "\"")
-                # 如果KEY内容为空(""),将被跳过
-                if key_text != "":
-                    text_line = "\"%s%s\" = \"%s\"" % (key_prefix,key_text, value_text)
-                    file_object.write(text_line + ";\n")
-                    file_en.write(text_line + ";\n")
-                
+                if key_text != "": # 如果KEY内容为空(""),将被跳过
+                    value_text = values_en[index].replace("\"", "\\\"").replace("\n", "\\n").replace("\\n\"", "\"").lstrip()
+                    map_new_record = "sheet:%s:%s" % (sheet_name, (index + rowIndexForStartKeyValue))
+                    # 处理提示
+                    if map_record.get(key_text) is None:  # 无重复
+                        map_record[key_text] = map_new_record # 加入 map_record
+                    else:
+                        map_old_record = map_record.get(key_text)
+                        map_record[key_text] = "%s ; %s" % (map_old_record,map_new_record)
+                        print("---------------------------------------------------------------------")
+                        print(">>>>> Duplicate key: [%s] <<<<<" % key_text)
+                        print("---------------------------------------------------------------------")
+                    en_new_value = "\"%s%s\" = \"%s\"" % (key_prefix,key_text, value_text) # 加入 map_key_value_en
+                    file_object.write(en_new_value + ";\n")
+                    file_en.write(en_new_value + ";\n")
+                        
     # 写入文件 SC
     filename_sc = sheet_name + '_sc.strings'
     with open("sc.strings", 'a+') as file_sc:
@@ -63,12 +76,13 @@ for sheet_index in range(len(sheet_names)):
             print("filename_sc: %s" % filename_sc)
             for index in range(len(keys)):
                 key_text = keys[index]
-                value_text = values_sc[index].replace("\"", "\\\"").replace("\n", "\\n").replace("\\n\"", "\"")
                 # 如果KEY内容为空(""),将被跳过
                 if key_text != "":
-                    text_line = "\"%s%s\" = \"%s\"" % (key_prefix,key_text, value_text)
-                    file_object.write(text_line + ";\n")
-                    file_sc.write(text_line + ";\n")
+                    value_text = values_sc[index].replace("\"", "\\\"").replace("\n", "\\n").replace("\\n\"", "\"").lstrip()
+                    sc_new_value = "\"%s%s\" = \"%s\"" % (key_prefix,key_text, value_text) # 加入 map_key_value_en
+                    file_object.write(sc_new_value + ";\n")
+                    file_sc.write(sc_new_value + ";\n")
+                        
 
     # 写入文件 TC
     filename_tc = sheet_name + '_tc.strings'
@@ -78,11 +92,12 @@ for sheet_index in range(len(sheet_names)):
             print("filename_tc: %s" % filename_tc)
             for index in range(len(keys)):
                 key_text = keys[index]
-                value_text = values_tc[index].replace("\"", "\\\"").replace("\n", "\\n").replace("\\n\"", "\"")
                 # 如果KEY内容为空(""),将被跳过
                 if key_text != "":
-                    text_line = "\"%s%s\" = \"%s\"" % (key_prefix,key_text, value_text)
-                    file_object.write(text_line + ";\n")
-                    file_tc.write(text_line + ";\n")
+                    value_text = values_tc[index].replace("\"", "\\\"").replace("\n", "\\n").replace("\\n\"", "\"").lstrip()
+                    tc_new_value = "\"%s%s\" = \"%s\"" % (key_prefix,key_text, value_text) # 加入 map_key_value_en
+                    file_object.write(tc_new_value + ";\n")
+                    file_tc.write(tc_new_value + ";\n")
 
-print("SUCCESS!")
+print("导出成功,没去重")
+    
