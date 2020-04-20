@@ -5,7 +5,7 @@ import xlrd
 excel_file_name = "nls.xlsx"
 # 指定sheets名字s
 sheet_names = ["Reset secondary password", "Reset password", "Error handling", "Device optional page"]
-key_prefixs = ["reset_password_with_", "reset_secondary_password_with_", "reset_password_error_handing_with_", "device_optional_with_"]
+sheet_key_prefixs = ["reset_password_with_", "reset_secondary_password_with_", "reset_password_error_handing_with_", "device_optional_with_"]
 
 #### 指定关键行号
 # 标题行的行号(没用使用)
@@ -26,12 +26,15 @@ columnIndexForValues_tc = 3
 
 book = xlrd.open_workbook(excel_file_name)
 # 遍历sheets
-for sheet_name in sheet_names:
-    # 获取sheet
+for sheet_index in range(len(sheet_names)):
+    sheet_name = sheet_names[sheet_index]
+    key_prefix = sheet_key_prefixs[sheet_index]
+    
+    # 获取sheet对象
     sheet = book.sheet_by_name(sheet_name)
     # all keys string(s)
     keys = sheet.col_values(columnIndexForAllKeys, rowIndexForStartKeyValue)
-    # all english value string(s)
+    # all values string(s)
     values_en = sheet.col_values(columnIndexForValues_en, rowIndexForStartKeyValue)
     values_sc = sheet.col_values(columnIndexForValues_sc, rowIndexForStartKeyValue)
     values_tc = sheet.col_values(columnIndexForValues_tc, rowIndexForStartKeyValue)
@@ -40,7 +43,6 @@ for sheet_name in sheet_names:
     filename_en = 'output_' + sheet_name + '_en.strings'
     with open(filename_en, 'w') as file_object:
         for index in range(len(keys)):
-            key_prefix = key_prefixs[index]
             key_text = keys[index]
             value_text = values_en[index]
             # 如果KEY内容为空(""),将被跳过
@@ -52,7 +54,6 @@ for sheet_name in sheet_names:
     filename_sc = 'output_' + sheet_name + '_sc.strings'
     with open(filename_sc, 'w') as file_object:
         for index in range(len(keys)):
-            key_prefix = key_prefixs[index]
             key_text = keys[index]
             value_text = values_sc[index]
             # 如果KEY内容为空(""),将被跳过
@@ -64,7 +65,6 @@ for sheet_name in sheet_names:
     filename_tc = 'output_' + sheet_name + '_tc.strings'
     with open(filename_tc, 'w') as file_object:
         for index in range(len(keys)):
-            key_prefix = key_prefixs[index]
             key_text = keys[index]
             value_text = values_tc[index]
             # 如果KEY内容为空(""),将被跳过
