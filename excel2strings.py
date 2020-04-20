@@ -42,6 +42,7 @@ for sheet_index in range(len(sheet_names)):
     # 写入文件 EN
     filename_en = 'output_' + sheet_name + '_en.strings'
     with open(filename_en, 'w') as file_object:
+        file_object.write("/* %s */\n" % (key_prefix))
         for index in range(len(keys)):
             key_text = keys[index]
             value_text = values_en[index]
@@ -53,6 +54,7 @@ for sheet_index in range(len(sheet_names)):
     # 写入文件 SC
     filename_sc = 'output_' + sheet_name + '_sc.strings'
     with open(filename_sc, 'w') as file_object:
+        file_object.write("/* %s */\n" % (key_prefix))
         for index in range(len(keys)):
             key_text = keys[index]
             value_text = values_sc[index]
@@ -64,6 +66,7 @@ for sheet_index in range(len(sheet_names)):
     # 写入文件 TC
     filename_tc = 'output_' + sheet_name + '_tc.strings'
     with open(filename_tc, 'w') as file_object:
+        file_object.write("/* %s */\n" % (key_prefix))
         for index in range(len(keys)):
             key_text = keys[index]
             value_text = values_tc[index]
