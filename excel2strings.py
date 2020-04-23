@@ -1,6 +1,13 @@
 from openpyxl import load_workbook
-
+print("===============================START====================================\n")
+print("===============================Processing===============================\n")
 wb = load_workbook(filename = 'string.xlsx')
+
+sheet_name_list = [
+    "2016",
+    "2017",
+    "2018"
+]
 
 key_list = [] # 主要为记录顺序
 map_en = {}
@@ -14,21 +21,30 @@ def trim_value(text):
         return ""
     return text.strip().replace("\"", "\\\"").replace("\n", "\\n").replace("\\n\"", "\"")
 
-with open("strings.log", 'w') as file_log:
-    for sheet in wb:
+with open("output.log", 'w') as file_log:
+    for sheet_name in sheet_name_list:
+        sheet = wb[sheet_name]
         sheet_name_key = "SHEET_NAME_%s" % sheet.title
         key_list.append(sheet_name_key)
         map_en[sheet_name_key] = sheet.title
         map_tc[sheet_name_key] = sheet.title
         map_sc[sheet_name_key] = sheet.title
-        file_log.write("---------------------------sheet_name:%s----------------------\n" % sheet.title)
-        for row in sheet.iter_rows(min_row=2,min_col=1,max_col=4, values_only=True):
+        file_log.write("\n")
+        file_log.write("---------------------------Sheet:%s----------------------\n" % sheet.title)
+        rows = sheet.iter_rows(min_row=2,min_col=1,max_col=4, values_only=True)
+        for index, row in enumerate(rows):
             # blank line: 4 cell all None, break this inner layer loop.
             if (row[0] is None) and (row[1] is None) and (row[2] is None) and (row[3] is None):
                 break
             # blank cell: 1 or 2, or 3 cell is None, write to log
             elif (row[0] is None) or (row[1] is None) or (row[2] is None) or (row[3] is None):
-                file_log.write("skip line[%s]:%s,%s,%s,%s\n" % (sheet.title,row[0],row[1],row[2],row[3]))
+                file_log.write("\n")
+                file_log.write("Sheet Name ->:[%s] - Line number:%d\n" % (sheet.title, index + 2))
+                file_log.write("Key -------->:%s\n" % (row[0]))
+                file_log.write("Value EN --->:%s\n" % (row[1]))
+                file_log.write("Value TC --->:%s\n" % (row[2]))
+                file_log.write("Value SC --->:%s\n" % (row[3]))
+                file_log.write("\n")
                 continue
             # OK line: write to xx.strings
             else:
@@ -44,9 +60,9 @@ with open("strings.log", 'w') as file_log:
                 map_tc[key] = value_tc
                 map_sc[key] = value_sc
 
-with open("en.strings", 'w') as file_en:
-    with open("sc.strings", 'w') as file_sc:
-        with open("tc.strings", 'w') as file_tc:
+with open("output_en.strings", 'w') as file_en:
+    with open("output_sc.strings", 'w') as file_sc:
+        with open("output_tc.strings", 'w') as file_tc:
             for key in key_list:
                 if key.startswith("SHEET_NAME"):
                     sheet_name_value_en = map_en[key]
