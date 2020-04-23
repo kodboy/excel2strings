@@ -2,6 +2,8 @@
 
 A tiny tool to convert excel file to iOS .strings files.
 
+* loop all sheets
+* deduplicate key. if same key, replace previous value with last value
 
 ## Dependencies
 
