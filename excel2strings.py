@@ -16,6 +16,11 @@ def trim_value(text):
 
 with open("strings.log", 'w') as file_log:
     for sheet in wb:
+        sheet_name_key = "SHEET_NAME_%s" % sheet.title
+        key_list.append(sheet_name_key)
+        map_en[sheet_name_key] = sheet.title
+        map_tc[sheet_name_key] = sheet.title
+        map_sc[sheet_name_key] = sheet.title
         file_log.write("---------------------------sheet_name:%s----------------------\n" % sheet.title)
         for row in sheet.iter_rows(min_row=2,min_col=1,max_col=4, values_only=True):
             # blank line: 4 cell all None, break this inner layer loop.
@@ -43,11 +48,33 @@ with open("en.strings", 'w') as file_en:
     with open("sc.strings", 'w') as file_sc:
         with open("tc.strings", 'w') as file_tc:
             for key in key_list:
-                value_en = map_en[key]
-                value_tc = map_tc[key]
-                value_sc = map_sc[key]
-                file_en.write("\"%s\" = \"%s\";\n" % (key, value_en))
-                file_sc.write("\"%s\" = \"%s\";\n" % (key, value_sc))
-                file_tc.write("\"%s\" = \"%s\";\n" % (key, value_tc))
+                if key.startswith("SHEET_NAME"):
+                    sheet_name_value_en = map_en[key]
+                    file_en.write("\n")
+                    file_en.write("/*******************************\n")
+                    file_en.write("*    %s    \n" % sheet_name_value_en)
+                    file_en.write("*******************************/\n")
+                    file_en.write("\n")
+
+                    sheet_name_value_tc = map_tc[key]
+                    file_tc.write("\n")
+                    file_tc.write("/*******************************\n")
+                    file_tc.write("*    %s    \n" % sheet_name_value_tc)
+                    file_tc.write("*******************************/\n")
+                    file_tc.write("\n")
+
+                    sheet_name_value_sc = map_sc[key]
+                    file_sc.write("\n")
+                    file_sc.write("/*******************************\n")
+                    file_sc.write("*    %s    \n" % sheet_name_value_sc)
+                    file_sc.write("*******************************/\n")
+                    file_sc.write("\n")
+                else:
+                    value_en = map_en[key]
+                    value_tc = map_tc[key]
+                    value_sc = map_sc[key]
+                    file_en.write("\"%s\" = \"%s\";\n" % (key, value_en))
+                    file_sc.write("\"%s\" = \"%s\";\n" % (key, value_sc))
+                    file_tc.write("\"%s\" = \"%s\";\n" % (key, value_tc))
 
 print("===============================END====================================\n")
