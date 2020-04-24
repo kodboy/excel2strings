@@ -93,4 +93,4 @@ with open("output_en.strings", 'w') as file_en:
                     file_sc.write("\"%s\" = \"%s\";\n" % (key, value_sc))
                     file_tc.write("\"%s\" = \"%s\";\n" % (key, value_tc))
 
-print("===============================END====================================\n")
+print("===============================The End====================================\n")
