@@ -1,7 +1,8 @@
 from openpyxl import load_workbook
-print("===============================START====================================\n")
-print("===============================Processing===============================\n")
-wb = load_workbook(filename = 'string.xlsx')
+
+print("Processing ...\n")
+
+wb = load_workbook(filename = 'income.xlsx')
 
 sheet_name_list = [
     "2016",
@@ -31,12 +32,12 @@ with open("output.log", 'w') as file_log:
         map_sc[sheet_name_key] = sheet.title
         file_log.write("\n")
         file_log.write("---------------------------Sheet:%s----------------------\n" % sheet.title)
-        rows = sheet.iter_rows(min_row=2,min_col=1,max_col=4, values_only=True)
+        rows = sheet.iter_rows(min_row=2,min_col=2,max_col=5, values_only=True)
         for index, row in enumerate(rows):
-            # blank line: 4 cell all None, break this inner layer loop.
+            # blank line: 4 cell all None, skip the row
             if (row[0] is None) and (row[1] is None) and (row[2] is None) and (row[3] is None):
-                break
-            # blank cell: 1 or 2, or 3 cell is None, write to log
+                continue
+            # blank cell: 1 or 2, or 3 cell value is None, write to log, then skip the row
             elif (row[0] is None) or (row[1] is None) or (row[2] is None) or (row[3] is None):
                 file_log.write("\n")
                 file_log.write("Sheet Name ->:[%s] - Line number:%d\n" % (sheet.title, index + 2))
@@ -46,7 +47,7 @@ with open("output.log", 'w') as file_log:
                 file_log.write("Value SC --->:%s\n" % (row[3]))
                 file_log.write("\n")
                 continue
-            # OK line: write to xx.strings
+            # OK line: join in map_xx, waiting to write to xx.strings file.
             else:
                 key = trim_key(row[0])
                 value_en = trim_value(row[1])
@@ -67,23 +68,17 @@ with open("output_en.strings", 'w') as file_en:
                 if key.startswith("SHEET_NAME"):
                     sheet_name_value_en = map_en[key]
                     file_en.write("\n")
-                    file_en.write("/*******************************\n")
-                    file_en.write("*    %s    \n" % sheet_name_value_en)
-                    file_en.write("*******************************/\n")
+                    file_en.write("/*    %s    */\n" % sheet_name_value_en)
                     file_en.write("\n")
 
                     sheet_name_value_tc = map_tc[key]
                     file_tc.write("\n")
-                    file_tc.write("/*******************************\n")
-                    file_tc.write("*    %s    \n" % sheet_name_value_tc)
-                    file_tc.write("*******************************/\n")
+                    file_tc.write("/*    %s    */\n" % sheet_name_value_tc)
                     file_tc.write("\n")
 
                     sheet_name_value_sc = map_sc[key]
                     file_sc.write("\n")
-                    file_sc.write("/*******************************\n")
-                    file_sc.write("*    %s    \n" % sheet_name_value_sc)
-                    file_sc.write("*******************************/\n")
+                    file_sc.write("/*    %s    */\n" % sheet_name_value_sc)
                     file_sc.write("\n")
                 else:
                     value_en = map_en[key]
